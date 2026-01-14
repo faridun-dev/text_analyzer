@@ -1,5 +1,5 @@
-import 'package:desktop_drop/desktop_drop.dart';
 import 'package:flutter/material.dart';
+import 'package:text_analyzer_app/widgets/sidebar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -9,31 +9,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool _dragging = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: DropTarget(
-        onDragDone: (detail) {
-          setState(() {});
-        },
-        onDragEntered: (detail) {
-          setState(() {
-            _dragging = true;
-          });
-        },
-        onDragExited: (detail) {
-          setState(() {
-            _dragging = false;
-          });
-        },
-        child: Container(
-          height: 200,
-          width: 200,
-          color: _dragging ? Colors.blue.withOpacity(0.4) : Colors.black26,
-          child: const Center(child: Text("Drop here")),
-        ),
+      backgroundColor: Colors.white,
+      body: Row(
+        children: [
+          Expanded(child: Sidebar()),
+          Expanded(flex: 5, child: Column(children: [Text("Analyzer")])),
+        ],
       ),
     );
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:text_analyzer_app/screens/home_screen.dart';
+import 'package:text_analyzer_app/config/router_config.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main() async {
@@ -26,6 +26,6 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: HomeScreen());
+    return MaterialApp.router(routerConfig: router);
   }
 }

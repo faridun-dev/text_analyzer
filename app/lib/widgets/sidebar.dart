@@ -7,15 +7,33 @@ class Sidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       shape: BeveledRectangleBorder(),
       child: ListView(
-        physics: NeverScrollableScrollPhysics(),
         padding: EdgeInsets.all(8),
         children: [
-          SidebarItem(title: "Home", icon: Icons.home_rounded),
-          SidebarItem(title: "Files", icon: Icons.file_present_rounded),
-          SidebarItem(title: "Settings", icon: Icons.settings_rounded),
+          DrawerHeader(
+            decoration: BoxDecoration(color: Colors.white),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.document_scanner_rounded),
+                SizedBox(width: 5),
+                Text("Text Analyzer", style: TextStyle(fontSize: 13)),
+              ],
+            ),
+          ),
+          SidebarItem(title: "Home", icon: Icons.home_rounded, selected: true),
+          SidebarItem(
+            title: "Files",
+            icon: Icons.file_present_rounded,
+            selected: false,
+          ),
+          SidebarItem(
+            title: "Settings",
+            icon: Icons.settings_rounded,
+            selected: false,
+          ),
         ],
       ),
     );

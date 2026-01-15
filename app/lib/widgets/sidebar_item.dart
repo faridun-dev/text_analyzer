@@ -4,12 +4,14 @@ class SidebarItem extends StatefulWidget {
   final String title;
   final IconData icon;
   final bool selected;
+  final void Function()? onTap;
 
   const SidebarItem({
     super.key,
     required this.title,
     required this.icon,
     required this.selected,
+    required this.onTap,
   });
 
   @override
@@ -22,6 +24,7 @@ class _SidebarItemState extends State<SidebarItem> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: widget.onTap,
       child: MouseRegion(
         onEnter: (event) => setState(() {
           _isHovering = true;
@@ -63,7 +66,6 @@ class _SidebarItemState extends State<SidebarItem> {
           ),
         ),
       ),
-      onTap: () {},
     );
   }
 }

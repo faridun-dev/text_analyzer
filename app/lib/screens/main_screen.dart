@@ -34,6 +34,7 @@ class _MainScreenState extends State<MainScreen> {
       body: Row(
         children: [
           Expanded(
+            flex: 1,
             child: Sidebar(
               items: [
                 DrawerHeader(
@@ -75,7 +76,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ),
           Expanded(
-            flex: 5,
+            flex: 6,
             child: IndexedStack(
               index: _selectedIndex,
               children: _widgetOptions,

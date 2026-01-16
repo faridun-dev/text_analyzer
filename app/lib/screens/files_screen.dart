@@ -18,7 +18,7 @@ class _FilesScreenState extends State<FilesScreen> {
     return Scaffold(
       backgroundColor: Color(0xFFF3F4F6),
       body: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -31,7 +31,7 @@ class _FilesScreenState extends State<FilesScreen> {
               height: 200,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: 6,
+                itemCount: 10,
                 itemBuilder: (context, index) {
                   return Container(
                     width: 200,
@@ -56,6 +56,8 @@ class _FilesScreenState extends State<FilesScreen> {
                           "Some random 777777 document.docx",
                           softWrap: true,
                           textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
                           style: TextStyle(
                             color: Color(0xFF374151),
                             fontSize: 12,
@@ -75,57 +77,100 @@ class _FilesScreenState extends State<FilesScreen> {
                 },
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 15),
             Expanded(
-              child: DropTarget(
-                onDragDone: (detail) {
-                  setState(() {});
-                },
-                onDragEntered: (detail) {
-                  setState(() {
-                    _dragging = true;
-                  });
-                },
-                onDragExited: (detail) {
-                  setState(() {
-                    _dragging = false;
-                  });
-                },
-                child: DottedBorder(
-                  options: RoundedRectDottedBorderOptions(
-                    radius: Radius.circular(8),
-                    strokeWidth: 2,
-                    dashPattern: [8, 4],
-                    color: !_dragging ? Color(0xFF374151) : Color(0xFF1D4ED8),
-                  ),
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: _dragging ? Color(0xFFEFF6FF) : Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          "assets/file-diff.svg",
-                          colorFilter: ColorFilter.mode(
-                            !_dragging ? Color(0xFF374151) : Color(0xFF1D4ED8),
-                            BlendMode.srcIn,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: DropTarget(
+                      onDragDone: (detail) {
+                        setState(() {});
+                      },
+                      onDragEntered: (detail) {
+                        setState(() {
+                          _dragging = true;
+                        });
+                      },
+                      onDragExited: (detail) {
+                        setState(() {
+                          _dragging = false;
+                        });
+                      },
+                      child: DottedBorder(
+                        options: RoundedRectDottedBorderOptions(
+                          radius: Radius.circular(8),
+                          strokeWidth: 2,
+                          dashPattern: [8, 4],
+                          color: !_dragging
+                              ? Color(0xFF374151)
+                              : Color(0xFF1D4ED8),
+                        ),
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: _dragging ? Color(0xFFEFF6FF) : Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                "assets/file-diff.svg",
+                                colorFilter: ColorFilter.mode(
+                                  !_dragging
+                                      ? Color(0xFF374151)
+                                      : Color(0xFF1D4ED8),
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                              Text(
+                                "Drop here",
+                                style: TextStyle(
+                                  color: _dragging
+                                      ? Color(0xFF1D4ED8)
+                                      : Color(0xFF374151),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(0xFF1D4ED8),
+                                  foregroundColor: Colors.white,
+                                ),
+                                child: Text("Upload"),
+                              ),
+                            ],
                           ),
                         ),
-                        Text(
-                          "Drop here",
-                          style: TextStyle(
-                            color: _dragging
-                                ? Color(0xFF1D4ED8)
-                                : Color(0xFF374151),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        DataTable(
+                          headingTextStyle: TextStyle(color: Color(0xFF6B7280)),
+                          dataTextStyle: TextStyle(color: Color(0xFF1A202C)),
+                          columns: [
+                            DataColumn(label: Text("DOCUMENT NAME")),
+                            DataColumn(label: Text("SIZE")),
+                          ],
+                          rows: List.generate(
+                            30,
+                            (int index) => DataRow(
+                              cells: [
+                                DataCell(Text('QA Report.docx')),
+                                DataCell(Text('5.6 MB')),
+                              ],
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                ),
+                ],
               ),
             ),
           ],

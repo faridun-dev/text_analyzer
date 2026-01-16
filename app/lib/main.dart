@@ -8,9 +8,12 @@ void main() async {
 
   WindowOptions windowOptions = const WindowOptions(
     size: Size(1200, 800),
-    minimumSize: Size(1000, 700),
+    minimumSize: Size(1200, 800),
+    maximumSize: Size(1200, 800),
     center: true,
     title: "Text Analyzer",
+    fullScreen: false,
+    windowButtonVisibility: false,
   );
 
   windowManager.waitUntilReadyToShow(windowOptions, () async {

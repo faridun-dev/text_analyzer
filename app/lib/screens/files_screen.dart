@@ -18,7 +18,12 @@ class _FilesScreenState extends State<FilesScreen> {
     return Scaffold(
       backgroundColor: Color(0xFFF3F4F6),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsetsGeometry.only(
+          top: 20,
+          left: 20,
+          bottom: 20,
+          right: 0,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -39,6 +44,7 @@ class _FilesScreenState extends State<FilesScreen> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Color(0xFF6B7280)),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -162,7 +168,25 @@ class _FilesScreenState extends State<FilesScreen> {
                             (int index) => DataRow(
                               cells: [
                                 DataCell(Text('QA Report.docx')),
-                                DataCell(Text('5.6 MB')),
+                                DataCell(
+                                  Row(
+                                    children: [
+                                      Text('5.6 MB'),
+                                      SizedBox(width: 100),
+                                      GestureDetector(
+                                        onTap: () {},
+                                        child: SvgPicture.asset(
+                                          "assets/trash-2.svg",
+                                          colorFilter: ColorFilter.mode(
+                                            Color(0xFFE53E3E),
+                                            BlendMode.srcIn,
+                                          ),
+                                          width: 16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
                           ),

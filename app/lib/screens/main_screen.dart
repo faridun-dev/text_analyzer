@@ -49,7 +49,7 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 SidebarItem(
                   title: "Home",
-                  icon: Icons.home_rounded,
+                  icon: "assets/house.svg",
                   selected: _selectedIndex == 0,
                   onTap: () {
                     _onItemTapped(0);
@@ -57,7 +57,7 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 SidebarItem(
                   title: "Files",
-                  icon: Icons.file_present_rounded,
+                  icon: "assets/folder-open.svg",
                   selected: _selectedIndex == 1,
                   onTap: () {
                     _onItemTapped(1);
@@ -65,7 +65,7 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 SidebarItem(
                   title: "Settings",
-                  icon: Icons.settings_rounded,
+                  icon: "assets/settings.svg",
                   selected: _selectedIndex == 2,
                   onTap: () {
                     _onItemTapped(2);
@@ -74,7 +74,13 @@ class _MainScreenState extends State<MainScreen> {
               ],
             ),
           ),
-          Expanded(flex: 5, child: _widgetOptions.elementAt(_selectedIndex)),
+          Expanded(
+            flex: 5,
+            child: IndexedStack(
+              index: _selectedIndex,
+              children: _widgetOptions,
+            ),
+          ),
         ],
       ),
     );

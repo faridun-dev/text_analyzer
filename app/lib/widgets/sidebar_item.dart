@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class SidebarItem extends StatefulWidget {
   final String title;
-  final IconData icon;
+  final String icon;
   final bool selected;
   final void Function()? onTap;
 
@@ -47,11 +48,12 @@ class _SidebarItemState extends State<SidebarItem> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Icon(
+                child: SvgPicture.asset(
                   widget.icon,
-                  color: !widget.selected
-                      ? Color(0xFF374151)
-                      : Color(0xFF1D4ED8),
+                  colorFilter: ColorFilter.mode(
+                    widget.selected ? Color(0xFF1D4ED8) : Color(0xFF374151),
+                    BlendMode.srcIn,
+                  ),
                 ),
               ),
               Text(

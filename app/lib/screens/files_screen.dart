@@ -49,7 +49,15 @@ class _FilesScreenState extends State<FilesScreen> {
             Expanded(
               child: Row(
                 children: [
-                  Expanded(child: FileDropWidget(dragging: _dragging)),
+                  Expanded(
+                    child: FileDropWidget(
+                      dragging: _dragging,
+                      onFilesSelected: (List<String> filePaths) {
+                        print('Files selected: $filePaths');
+                        // Handle the selected files here
+                      },
+                    ),
+                  ),
                   SizedBox(width: 10),
                   Expanded(
                     child: ListView(

@@ -7,12 +7,8 @@ import 'package:file_picker/file_picker.dart';
 class FileDropWidget extends StatefulWidget {
   bool dragging;
   final Function(List<String>)? onFilesSelected; // Callback for selected files
-  
-  FileDropWidget({
-    super.key, 
-    required this.dragging,
-    this.onFilesSelected,
-  });
+
+  FileDropWidget({super.key, required this.dragging, this.onFilesSelected});
 
   @override
   State<FileDropWidget> createState() => _FileDropWidgetState();
@@ -28,7 +24,7 @@ class _FileDropWidgetState extends State<FileDropWidget> {
     if (result != null) {
       List<String> filePaths = result.paths.whereType<String>().toList();
       widget.onFilesSelected?.call(filePaths);
-      
+
       // Optional: Print selected files for debugging
       print('Selected files: $filePaths');
     }
@@ -43,6 +39,60 @@ class _FileDropWidgetState extends State<FileDropWidget> {
         setState(() {
           widget.dragging = false;
         });
+        showDialog(
+          context: context,
+          builder: (context) {
+            return Dialog(
+              child: Container(
+                width: 600,
+                height: 400,
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Align(
+                      alignment: AlignmentGeometry.topCenter,
+                      child: Text(
+                        "Selected files",
+                        style: TextStyle(
+                          color: Color(0xFF111827),
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 319,
+                      child: ListView.builder(
+                        itemCount: filePaths.length,
+                        itemBuilder: (context, index) {
+                          return Text(
+                            filePaths[index],
+                            style: TextStyle(fontSize: 15),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          );
+                        },
+                      ),
+                    ),
+                    Spacer(),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF1D4ED8),
+                        foregroundColor: Colors.white,
+                      ),
+                      child: Text("Save"),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
       },
       onDragEntered: (detail) {
         setState(() {

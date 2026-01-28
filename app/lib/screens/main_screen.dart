@@ -37,27 +37,16 @@ class _MainScreenState extends State<MainScreen> {
             flex: 1,
             child: Sidebar(
               items: [
-                DrawerHeader(
-                  decoration: BoxDecoration(color: Colors.white),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.document_scanner_rounded),
-                      SizedBox(width: 5),
-                      Text("Text Analyzer", style: TextStyle(fontSize: 13)),
-                    ],
-                  ),
-                ),
                 SidebarItem(
-                  title: "Home",
-                  icon: "assets/house.svg",
+                  title: "Униграмма",
+                  icon: "assets/file-chart-pie.svg",
                   selected: _selectedIndex == 0,
                   onTap: () {
                     _onItemTapped(0);
                   },
                 ),
                 SidebarItem(
-                  title: "Files",
+                  title: "Файлы",
                   icon: "assets/folder-open.svg",
                   selected: _selectedIndex == 1,
                   onTap: () {
@@ -65,7 +54,7 @@ class _MainScreenState extends State<MainScreen> {
                   },
                 ),
                 SidebarItem(
-                  title: "Settings",
+                  title: "Настройки",
                   icon: "assets/settings.svg",
                   selected: _selectedIndex == 2,
                   onTap: () {

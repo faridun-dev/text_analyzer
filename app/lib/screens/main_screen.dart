@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:text_analyzer_app/screens/files_screen.dart';
-import 'package:text_analyzer_app/screens/home_screen.dart';
+import 'package:text_analyzer_app/screens/unigramm_screen.dart';
 import 'package:text_analyzer_app/screens/settings_screen.dart';
 import 'package:text_analyzer_app/widgets/sidebar.dart';
 import 'package:text_analyzer_app/widgets/sidebar_item.dart';
@@ -14,7 +14,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final List<Widget> _widgetOptions = [
-    HomeScreen(),
+    BatchAnalysisSection(),
     FilesScreen(),
     SettingsScreen(),
   ];

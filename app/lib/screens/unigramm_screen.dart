@@ -3,6 +3,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:cross_file/cross_file.dart';
+import 'dart:io';
+import 'package:archive/archive.dart';
 
 class BatchAnalysisSection extends StatefulWidget {
   const BatchAnalysisSection({Key? key}) : super(key: key);
@@ -58,6 +60,50 @@ class _BatchAnalysisSectionState extends State<BatchAnalysisSection> {
     setState(() {
       uploadedFiles.clear();
     });
+  }
+
+  Future<void> showFilePreview(XFile file) async {
+    try {
+      // Read the docx file (which is a ZIP archive)
+      final docxFile = File(file.path);
+      final bytes = await docxFile.readAsBytes();
+      final archive = ZipDecoder().decodeBytes(bytes);
+
+      // Find and read document.xml
+      String documentText = '';
+      for (var file in archive) {
+        if (file.name == 'word/document.xml') {
+          final content = String.fromCharCodes(file.content as List<int>);
+          // Simple XML text extraction (removes XML tags)
+          documentText = content
+              .replaceAll(RegExp(r'<[^>]*>'), ' ')
+              .replaceAll(RegExp(r'\s+'), ' ')
+              .trim();
+          break;
+        }
+      }
+
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => FilePreviewDialog(
+            fileName: file.name,
+            fileContent: documentText.isEmpty
+                ? 'No content found in the file'
+                : documentText,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error previewing file: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   Future<void> analyzeAndExport() async {
@@ -381,6 +427,15 @@ class _BatchAnalysisSectionState extends State<BatchAnalysisSection> {
                                 ),
                               ),
                               IconButton(
+                                icon: const Icon(Icons.preview, size: 18),
+                                color: const Color(0xFF2563EB),
+                                onPressed: () => showFilePreview(file),
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                tooltip: 'Preview file',
+                              ),
+                              const SizedBox(width: 8),
+                              IconButton(
                                 icon: const Icon(Icons.close, size: 18),
                                 color: const Color(0xFF6B7280),
                                 onPressed: () => removeFile(index),
@@ -473,6 +528,126 @@ class _BatchAnalysisSectionState extends State<BatchAnalysisSection> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         elevation: 0,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class FilePreviewDialog extends StatelessWidget {
+  final String fileName;
+  final String fileContent;
+
+  const FilePreviewDialog({
+    Key? key,
+    required this.fileName,
+    required this.fileContent,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.7,
+        height: MediaQuery.of(context).size.height * 0.8,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          children: [
+            // Header
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: const BoxDecoration(
+                border: Border(bottom: BorderSide(color: Color(0xFFE5E7EB))),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  topRight: Radius.circular(12),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'File Preview',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF111827),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          fileName,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Color(0xFF6B7280),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.pop(context),
+                    color: const Color(0xFF6B7280),
+                  ),
+                ],
+              ),
+            ),
+            // Content
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.all(24),
+                child: SingleChildScrollView(
+                  child: Text(
+                    fileContent.isEmpty
+                        ? 'No content found in the file'
+                        : fileContent,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      height: 1.6,
+                      color: Color(0xFF374151),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            // Footer
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: const BoxDecoration(
+                border: Border(top: BorderSide(color: Color(0xFFE5E7EB))),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(12),
+                  bottomRight: Radius.circular(12),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text(
+                      'Close',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF2563EB),
                       ),
                     ),
                   ),
